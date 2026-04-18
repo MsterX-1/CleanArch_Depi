@@ -1,4 +1,10 @@
+using Application.Interfaces.IRepositories;
+using Application.Interfaces.IServices;
+using Application.Interfaces.IUnitOfWork;
+using Application.Services;
 using Infrastructure.Database;
+using Infrastructure.Repositories;
+using Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace API
@@ -13,6 +19,9 @@ namespace API
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));
 
             builder.Services.AddControllers();
 
